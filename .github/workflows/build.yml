@@ -1,0 +1,24 @@
+name: Build BusJam
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Windows
+        if: runner.os == 'Windows'
+        run: gcc main.c -o BusJam.exe
+
+      - name: Build Linux/macOS
+        if: runner.os != 'Windows'
+        run: gcc main.c -o BusJam
